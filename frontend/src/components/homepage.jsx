@@ -26,28 +26,28 @@ const slidestyle = {
 
 export const Homepage = () => {
 
-  const jwt = localStorage.getItem("access-token");
-  if (!jwt) {
-    (window.location.href = "/login")
-  } else {
-    // console.log(process.env.REACT_APP_IP);
-    let st1 = process.env.REACT_APP_IP;
-    let st2 = "/auth";
-    let result = st1.concat(st2);
-    console.log(result);
-    axios
-      .get(result, {
-        headers: { authorization: `Bearer: ${jwt}` }
-      })
-      .then(res => {
-        console.log("VERIFIED USER");
-      })
-      .catch(err => {
-        console.log("error here is -->  ", JSON.stringify(err));
-        localStorage.removeItem("access-token");
-        (window.location.href = "/login")
-      });
-  }
+//   const jwt = localStorage.getItem("access-token");
+//   if (!jwt) {
+//     (window.location.href = "/login")
+//   } else {
+//     // console.log(process.env.REACT_APP_IP);
+//     let st1 = process.env.REACT_APP_IP;
+//     let st2 = "/auth";
+//     let result = st1.concat(st2);
+//     console.log(result);
+//     axios
+//       .get(result, {
+//         headers: { authorization: `Bearer: ${jwt}` }
+//       })
+//       .then(res => {
+//         console.log("VERIFIED USER");
+//       })
+//       .catch(err => {
+//         console.log("error here is -->  ", JSON.stringify(err));
+//         localStorage.removeItem("access-token");
+//         (window.location.href = "/login")
+//       });
+//   }
   const navigate=useNavigate();
 
   return (
