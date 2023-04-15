@@ -97,6 +97,7 @@ const RoomPage = () => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
+      console.log(remoteStream);
       setRemoteStream(remoteStream[0]);
     });
   }, []);
