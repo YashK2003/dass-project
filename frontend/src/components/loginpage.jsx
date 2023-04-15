@@ -88,7 +88,8 @@ export const LoginPage = () => {
                     } else {
                         console.log("valid user");
                         localStorage.setItem("access-token", res.data);
-                        (window.location.href = "/home")
+                        navigate("/home")
+                        // (window.location.href = "/home")
                     }
                 })
                 .catch(err => {
