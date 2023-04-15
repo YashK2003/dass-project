@@ -1,7 +1,27 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "./peer";
 import { useSocket } from "./socketprovider";
+
+function VideoStream({ stream }) {
+  useEffect(() => {
+    if (stream) {
+      // Set the `srcObject` property of the video element to the media stream
+      const videoElement = document.getElementById('video-element');
+      videoElement.srcObject = stream;
+
+      // Play the video
+      videoElement.play();
+    }
+  }, [stream]);
+
+  return (
+    <div>
+      <h1>My Video Stream</h1>
+      <video id="video-element" width="640" height="480" />
+    </div>
+  );
+}
 
 
 const RoomPage = () => {
@@ -96,10 +116,10 @@ const RoomPage = () => {
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
-      const remoteStream = ev.streams;
+      const remoteStreamtemp = ev.streams;
       console.log("GOT TRACKS!!");
-      console.log("remoteStream is" , remoteStream);
-      setRemoteStream(remoteStream[0]);
+      console.log("remoteStream is" , remoteStreamtemp);
+      setRemoteStream(remoteStreamtemp[0]);
     });
   }, []);
 
@@ -150,13 +170,7 @@ const RoomPage = () => {
       {remoteStream && (
         <>
           <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={remoteStream}
-          />
+     <VideoStream stream={remoteStream} />
         </>
       )}
       
