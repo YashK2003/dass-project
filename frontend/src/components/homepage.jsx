@@ -117,10 +117,10 @@ export const Homepage = () => {
             style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/cl")}}>
               <AiOutlineMessage /></button>
               
-            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/lobby")}}>
+            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/vid")}}>
               <AiOutlineVideoCamera /></button>
               
-            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/profile")}}>
+            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/lobby")}}>
             <TiUserOutline/></button>
             
 
