@@ -45,11 +45,20 @@ const RoomPage = () => {
     [socket]
   );
 
+//   const sendStreams = useCallback(() => {
+//     for (const track of myStream.getTracks()) {
+//       peer.peer.addTrack(track, myStream);
+//     }
+//   }, [myStream]);
+  
   const sendStreams = useCallback(() => {
-    for (const track of myStream.getTracks()) {
+  for (const track of myStream.getTracks()) {
+    const sender = peer.peer.getSenders().find((s) => s.track === track);
+    if (!sender) {
       peer.peer.addTrack(track, myStream);
     }
-  }, [myStream]);
+  }
+}, [myStream, peer]);
 
   const handleCallAccepted = useCallback(
     ({ from, ans }) => {
