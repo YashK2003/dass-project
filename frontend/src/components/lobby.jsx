@@ -48,7 +48,7 @@ const LobbyScreen = () => {
     let st1 = process.env.REACT_APP_IP;
     let st2 = "/auth";
     let result = st1.concat(st2);
-    console.log(result);
+    // console.log(result);
     axios
         .get(result , {
         headers: { authorization: `Bearer: ${jwt}` }

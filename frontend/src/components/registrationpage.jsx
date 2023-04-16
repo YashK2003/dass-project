@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import styled from 'styled-components'
 import axios from 'axios'
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const TextField = styled.input.attrs(props => ({
   type: 'text',
@@ -42,6 +42,32 @@ export const RegistrationPage = () => {
   const [helperemail, setHelperemail] = useState('')
   const [helperpass, setHelperpass] = useState('')
   const [helperconfpass, setHelperconfpass] = useState('')
+
+  const navigate = useNavigate();
+  
+  const jwt = localStorage.getItem("access-token");
+  if (!jwt) {
+    navigate('/login');
+  } else {
+    // console.log(process.env.REACT_APP_IP);
+    let st1 = process.env.REACT_APP_IP;
+    let st2 = "/auth";
+    let result = st1.concat(st2);
+    //     console.log(result);
+    axios
+      .get(result, {
+        headers: { authorization: `Bearer: ${jwt}` }
+      })
+      .then(res => {
+        console.log("VERIFIED USER");
+        navigate('/home');
+      })
+      .catch(err => {
+        console.log("error here is -->  ", JSON.stringify(err));
+        localStorage.removeItem("access-token");
+        navigate('/login');
+      });
+  }
 
 
 

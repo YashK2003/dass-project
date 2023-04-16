@@ -32,6 +32,31 @@ const PasswordField = styled.input.attrs(props => ({
 
 export const LoginPage = () => {
     const navigate = useNavigate()
+
+    const jwt = localStorage.getItem("access-token");
+    if (!jwt) {
+        navigate('/login');
+    } else {
+        // console.log(process.env.REACT_APP_IP);
+        let st1 = process.env.REACT_APP_IP;
+        let st2 = "/auth";
+        let result = st1.concat(st2);
+        //     console.log(result);
+        axios
+            .get(result, {
+                headers: { authorization: `Bearer: ${jwt}` }
+            })
+            .then(res => {
+                console.log("VERIFIED USER");
+                navigate('/home');
+            })
+            .catch(err => {
+                console.log("error here is -->  ", JSON.stringify(err));
+                localStorage.removeItem("access-token");
+                navigate('/login');
+            });
+    }
+
     const [pass, setPass] = useState('')
     const [email, setEmail] = useState('')
 

@@ -9,9 +9,6 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { TiUserOutline } from "react-icons/ti";
 import { AiFillHome } from "react-icons/ai";
-// import photo1 from "./homepageutils/slide1.png";
-// import photo2 from "./homepageutils/slide2.png";
-// import photo3 from "./homepageutils/slide3.png";
 import { useNavigate } from 'react-router-dom';
 
 const slidestyle = {
@@ -34,7 +31,7 @@ export const Homepage = () => {
     let st1 = process.env.REACT_APP_IP;
     let st2 = "/auth";
     let result = st1.concat(st2);
-//     console.log(result);
+    //     console.log(result);
     axios
       .get(result, {
         headers: { authorization: `Bearer: ${jwt}` }
@@ -48,7 +45,7 @@ export const Homepage = () => {
         (window.location.href = "/login")
       });
   }
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="App">
@@ -63,7 +60,7 @@ export const Homepage = () => {
           <Slide index={0} >
             <div style={slidestyle}>
               <br />
-              <div style={{color:"black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
+              <div style={{ color: "black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
                 <h1>One platform to connect</h1>
                 <h3>Chat together, peer to peer, end to end</h3>
               </div>
@@ -73,7 +70,7 @@ export const Homepage = () => {
           <Slide index={1} >
             <div style={slidestyle}>
               <br />
-              <div style={{color:"black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
+              <div style={{ color: "black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
                 <h1>Unified Communication & Collaboration problem</h1>
                 <h3>Make meaningful connections with meetings, chatting, phone and more in one offering</h3>
               </div>
@@ -83,17 +80,12 @@ export const Homepage = () => {
           <Slide index={2}>
             <div style={slidestyle}>
               <br />
-              <div style={{color:"black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
+              <div style={{ color: "black", marginLeft: "10%", alignContent: "center", marginRight: "10%" }}>
                 <h1>Privacy First</h1>
                 <h3>The data is secure and private at all times</h3>
               </div>
             </div>
           </Slide>
-
-          {/* <Slide index={3} >
-            <div style={slidestyle}>
-            </div>
-          </Slide> */}
 
         </Slider>
 
@@ -107,22 +99,22 @@ export const Homepage = () => {
               <img src={Arrow} alt="arrow" />
             </ButtonNext>
           </div>
-          <div style={{ marginTop:"17%" }}>
-            {/* <Button></Button> */}
+          <div style={{ marginTop: "17%" }}>
+        
             <button
-            style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent", fontSize:"40px", marginLeft:"8.25%"}}>
+              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }}>
               <AiFillHome /></button>
-            
-            <button 
-            style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/cl")}}>
+
+            <button
+              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/cl") }}>
               <AiOutlineMessage /></button>
-              
-            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/vid")}}>
+
+            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/lobby") }}>
               <AiOutlineVideoCamera /></button>
-              
-            <button style={{color:"white", borderStyle:"unset" , backgroundColor:"transparent",fontSize:"40px", marginLeft:"8.25%"}} onClick={()=>{navigate("/lobby")}}>
-            <TiUserOutline/></button>
-            
+
+            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/profile") }}>
+              <TiUserOutline /></button>
+
 
           </div>
         </Wrapper>
