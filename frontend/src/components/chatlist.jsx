@@ -3,6 +3,11 @@ import axios from 'axios';
 import Conversation from './conversation';
 import { useEffect, useState } from "react";
 import { AiFillLock } from "react-icons/ai";
+import { AiFillMessage } from "react-icons/ai";
+import { AiOutlineVideoCamera } from "react-icons/ai";
+import { TiUserOutline } from "react-icons/ti";
+import { AiOutlineHome } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 
 export const Chatpage1 = () => {
 
@@ -17,7 +22,7 @@ export const Chatpage1 = () => {
             let result = st1.concat(st2);
             console.log(result);
             axios
-                .get(result , {
+                .get(result, {
                     headers: { authorization: `Bearer: ${jwt}` }
                 })
                 .then(res => {
@@ -48,7 +53,7 @@ export const Chatpage1 = () => {
             let result = st1.concat(st2);
             console.log(result);
             axios
-                .post(result , detailsobj)
+                .post(result, detailsobj)
                 .then(res => {
                     // console.log("success!!");
                     console.log(res.data)
@@ -61,6 +66,7 @@ export const Chatpage1 = () => {
         getConversations();
     }, [user._id]);
 
+    const navigate=useNavigate()
 
     // var arr = ["test1", "test2", "test3", "test4", "test5", "test6"]
 
@@ -68,17 +74,20 @@ export const Chatpage1 = () => {
         <div className="App">
             <div>
                 <h1 style={{ textAlign: "center", fontFamily: 'Caveat' }}>Chat with Friends </h1>
-                <div style={{ backgroundColor: "#87CEEB", width:"85%", padding: "20px", marginLeft:"2%" }}>
+                <div style={{ backgroundColor: "#87CEEB", width: "85%", padding: "20px", marginLeft: "2%" }}>
                     <div className="chatMenu">
                         <div className="chatMenuWrapper">
                             {conversations.map((c) => (
                                 <Conversation conversation={c} currentUser={user} />
                             ))}
-                            
+
                         </div>
                     </div>
                 </div>
-                <h4 style={{textAlign:"center"}}> <AiFillLock/> Your chats are <span style={{color:"lightgreen"}}>End to End encrypted</span></h4>
+                <h4 style={{ textAlign: "center" }}> <AiFillLock /> Your chats are <span style={{ color: "lightgreen" }}>End to End encrypted</span></h4>
+            </div>
+            <div style={{ marginBottom: "11%" }}>
+                <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/home") }}><AiOutlineHome /></button><button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }}><AiFillMessage /></button><button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/lobby") }}><AiOutlineVideoCamera /></button><button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/profile") }}><TiUserOutline /></button>
             </div>
         </div>
     );
