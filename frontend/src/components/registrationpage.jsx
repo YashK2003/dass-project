@@ -29,6 +29,19 @@ const PasswordField = styled.input.attrs(props => ({
   padding: ${props => props.padding};
 `
 
+function makeid(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
+
 export const RegistrationPage = () => {
 
   const [name, setName] = useState('')
@@ -42,12 +55,16 @@ export const RegistrationPage = () => {
   const [helperemail, setHelperemail] = useState('')
   const [helperpass, setHelperpass] = useState('')
   const [helperconfpass, setHelperconfpass] = useState('')
+  const [linkforcall , setLinkforcall] = useState('')
 
   const navigate = useNavigate();
+
+  // here generate a link for a particular user
+  // setLinkforcall(makeid(15))
   
   const jwt = localStorage.getItem("access-token");
   if (!jwt) {
-    navigate('/login');
+    // navigate('/login');
   } else {
     // console.log(process.env.REACT_APP_IP);
     let st1 = process.env.REACT_APP_IP;
@@ -65,7 +82,7 @@ export const RegistrationPage = () => {
       .catch(err => {
         console.log("error here is -->  ", JSON.stringify(err));
         localStorage.removeItem("access-token");
-        navigate('/login');
+        // navigate('/login');
       });
   }
 
@@ -140,6 +157,7 @@ export const RegistrationPage = () => {
       setHelperconfpass("")
     }
 
+    
 
     const detailsobj = {
       name: name,
@@ -149,7 +167,7 @@ export const RegistrationPage = () => {
       state: state,
       country: country,
       profession: "",
-      category: "",
+      category: makeid(15),
       password: pass,
       pincode: pin,
     }

@@ -3,8 +3,8 @@ import axios from 'axios'
 
 export const NotFound = () => {
     
-//      localStorage.removeItem("access-token");
-//       window.location.reload();
+    //  localStorage.removeItem("access-token");
+    //   window.location.reload();
 
       const detailsobj = {
         convid: "640d698acbb09e485610e826",

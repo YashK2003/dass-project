@@ -57,6 +57,7 @@ const LobbyScreen = () => {
         // console.log("VERIFIED USER");
         // console.log(res.data);
         setEmail(res.data.Email);
+        setMe(res.data.Category);
       })
       .catch(err => {
         console.log("error here is -->  ", JSON.stringify(err));
@@ -85,7 +86,7 @@ const LobbyScreen = () => {
   );
 
   useEffect(() => {
-    socket.on("me" ,(id)=>{setMe(id)
+    socket.on("me" ,(id)=>{
       console.log(id)} )
     socket.on("room:join", handleJoinRoom);
     return () => {

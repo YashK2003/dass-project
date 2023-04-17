@@ -35,7 +35,7 @@ export const LoginPage = () => {
 
     const jwt = localStorage.getItem("access-token");
     if (!jwt) {
-        navigate('/login');
+        // navigate('/login');
     } else {
         // console.log(process.env.REACT_APP_IP);
         let st1 = process.env.REACT_APP_IP;
@@ -53,7 +53,7 @@ export const LoginPage = () => {
             .catch(err => {
                 console.log("error here is -->  ", JSON.stringify(err));
                 localStorage.removeItem("access-token");
-                navigate('/login');
+                // navigate('/login');
             });
     }
 
