@@ -13,6 +13,7 @@ import Videoplayer from "./components/videoplayer";
 // new
 import LobbyScreen from "./components/lobby";
 import RoomPage from "./components/room";
+import ProfilePage from "./components/profile";
 
 function App()
 {
@@ -27,7 +28,7 @@ function App()
         <Route path="/chbx/:id" exact element={<Chatboxpage/>} />
         <Route path="/vid" exact element={<Videoplayer/>} />
         <Route path="/notif" exact element={<Notifications/>} />
-        <Route path="/opt" exact element={<Optionspg/>} />
+        <Route path="/profile" exact element={<ProfilePage/>} />
         <Route path="/lobby" exact element = {<LobbyScreen/>}/>
         <Route path= "/room/:roomid" exact element = {<RoomPage/>}/>
         <Route  path="*" element={<NotFound />} />
