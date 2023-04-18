@@ -88,8 +88,8 @@ function ProfilePage() {
       overflowY: 'auto',
     },
     profilePic: {
-      width: '7vw',
-      height: '7vw',
+      width: '14vw',
+      height: '14vw',
       objectFit: 'cover',
       borderRadius: '100%',
       position: 'sticky',
