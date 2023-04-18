@@ -8,10 +8,12 @@ import { AiOutlineVideoCamera } from "react-icons/ai";
 import { TiUserOutline } from "react-icons/ti";
 import { AiOutlineHome } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
+import LoopCircleLoading from './loader'
 
 export const Chatpage1 = () => {
 
     const [userdet, setUserdet] = useState([]);
+
     useEffect(() => {
         const jwt = localStorage.getItem("access-token");
         if (!jwt) {
@@ -35,7 +37,9 @@ export const Chatpage1 = () => {
                     (window.location.href = "/login")
                 });
         }
-    }, [userdet._id]);
+    }, [userdet]);
+
+   
 
     const [conversations, setConversations] = useState([]);
     // const [currentChat, setCurrentChat] = useState(null);
@@ -67,6 +71,15 @@ export const Chatpage1 = () => {
     }, [user._id]);
 
     const navigate=useNavigate()
+
+    if (!userdet) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
+
+    if (!conversations) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
+
 
     // var arr = ["test1", "test2", "test3", "test4", "test5", "test6"]
 

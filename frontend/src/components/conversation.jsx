@@ -3,6 +3,7 @@ import "./conversation.css"
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoopCircleLoading from './loader'
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState('');
@@ -55,6 +56,10 @@ export default function Conversation({ conversation, currentUser }) {
     };
     getUser();
   }, [currentUser, conversation]);
+
+  if (!user) {
+    return <div className= "App"><LoopCircleLoading/></div>;
+  }
 
   const redirect=(e)=>{
     // console.log("ndvkjwnv" , user);

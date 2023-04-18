@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import LoopCircleLoading from './loader'
 
 function ProfilePage() {
 
@@ -38,7 +39,7 @@ function ProfilePage() {
   }, [User]);
 
   if (!User) {
-    return <div>Loading user information...</div>;
+    return <div className= "App"><LoopCircleLoading/></div>;
   }
 
 
@@ -88,8 +89,8 @@ function ProfilePage() {
       overflowY: 'auto',
     },
     profilePic: {
-      width: '14vw',
-      height: '14vw',
+      width: '7vw',
+      height: '7vw',
       objectFit: 'cover',
       borderRadius: '100%',
       position: 'sticky',

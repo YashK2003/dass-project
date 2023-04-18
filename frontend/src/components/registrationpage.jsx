@@ -5,6 +5,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import LoopCircleLoading from './loader'
 
 const TextField = styled.input.attrs(props => ({
   type: 'text',
@@ -56,6 +57,7 @@ export const RegistrationPage = () => {
   const [helperpass, setHelperpass] = useState('')
   const [helperconfpass, setHelperconfpass] = useState('')
   const [linkforcall , setLinkforcall] = useState('')
+  const [loadercheck, setLoadercheck] = useState('')
 
   const navigate = useNavigate();
 
@@ -94,6 +96,8 @@ export const RegistrationPage = () => {
 
 
   const RegisterPage = async () => {
+
+    setLoadercheck("1")
 
     if (name === "") {
       setHelpername("Name is necessary!!")
@@ -191,10 +195,17 @@ export const RegistrationPage = () => {
         }
         else {
           window.alert("User registered successful !!");
+          setLoadercheck('')
           (window.location.href = "/login")
         }
       })
   }
+
+  
+  if (loadercheck) {
+    return <div className= "App"><LoopCircleLoading/></div>;
+  }
+
 
   return (
     <div className="App">

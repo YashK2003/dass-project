@@ -8,6 +8,7 @@ import { io } from "socket.io-client"
 import { IKContext, IKUpload } from 'imagekitio-react';
 import { BiSend } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
+import LoopCircleLoading from './loader'
 
 // required parameter to fetch images
 const urlEndpoint = 'https://ik.imagekit.io/tb5em07q5';
@@ -147,6 +148,18 @@ export const Chatboxpage = () => {
         getConversations();
         // eslint-disable-next-line
     }, [user._id]);
+
+    if (!userdet) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
+
+    if (!messages) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
+
+    if (!currentChat) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
 
     const handleuploadfg = async (e) => {
         e.preventDefault();

@@ -6,6 +6,7 @@ import axios from 'axios';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import { Button } from '@mui/material';
+import LoopCircleLoading from './loader'
 
 const TextField = styled.input.attrs(props => ({
     type: 'text',
@@ -63,8 +64,13 @@ export const LoginPage = () => {
     const [helperemail, setHelperemail] = useState('')
     const [helperpass, setHelperpass] = useState('')
     const [invaliduser, setInvaliduser] = useState('')
+    const [loadercheck, setLoadercheck] = useState('')
+
 
     const Logincheck = async () => {
+
+        setLoadercheck("1")
+
         console.log("email is ", email);
         console.log("pass is ", pass);
 
@@ -113,6 +119,7 @@ export const LoginPage = () => {
                     } else {
                         console.log("valid user");
                         localStorage.setItem("access-token", res.data);
+                        setLoadercheck('')
                         navigate("/home")
                         // (window.location.href = "/home")
                     }
@@ -125,6 +132,10 @@ export const LoginPage = () => {
             // window.alert("All fields are mandatory !!");
         }
     };
+
+    if (loadercheck) {
+        return <div className= "App"><LoopCircleLoading/></div>;
+    }
 
 
 
