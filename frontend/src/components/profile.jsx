@@ -70,7 +70,7 @@ function ProfilePage() {
   function func_logout() {
     // logout implementation
     localStorage.removeItem("access-token");
-    window.location.reload();
+    navigate("/login")
   }
 
 
