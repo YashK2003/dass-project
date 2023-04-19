@@ -113,6 +113,7 @@ export const LoginPage = () => {
                     console.log("here i am in the login page with my data");
                     if (res.data.data === "Invalid Credentials") {
                         console.log("invalid user");
+                        setLoadercheck('')
                         setInvaliduser("Please Enter Valid Credentials")
                         // window.alert("Invalid Credentials");
 
