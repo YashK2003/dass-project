@@ -4,26 +4,6 @@ import peer from "./peer";
 import { useSocket } from "./socketprovider";
 import { MdOutlineCallEnd } from "react-icons/md";
 import { BsCameraVideoOff, BsMicMute, BsMic, BsCameraVideo } from "react-icons/bs";
-function VideoStream({ stream }) {
-  useEffect(() => {
-    if (stream) {
-      // Set the `srcObject` property of the video element to the media stream
-      const videoElement = document.getElementById('video-element');
-      videoElement.srcObject = stream;
-
-      // Play the video
-      videoElement.play();
-    }
-  }, [stream]);
-
-  return (
-    <div style={vidbox2}>
-      {/* <h1>My Video Stream</h1> */}
-      <video style={{ margin: "9px", borderRadius: "10px" }} id="video-element" width="95%" height="95%" />
-    </div>
-  );
-}
-
 
 // styling 
 const vidbox1 = {
@@ -46,6 +26,29 @@ const vidbox2 = {
   backgroundColor: "#87CEEB",
   borderRadius: "10px"
 }
+
+function VideoStream({ stream }) {
+  useEffect(() => {
+    if (stream) {
+      // Set the `srcObject` property of the video element to the media stream
+      const videoElement = document.getElementById('video-element');
+      videoElement.srcObject = stream;
+
+      // Play the video
+      videoElement.play();
+    }
+  }, [stream]);
+
+  return (
+    <div style={vidbox2}>
+      {/* <h1>My Video Stream</h1> */}
+      <video style={{ margin: "9px", borderRadius: "10px" }} id="video-element" width="95%" height="95%" />
+    </div>
+  );
+}
+
+
+
 
 
 const RoomPage = () => {
