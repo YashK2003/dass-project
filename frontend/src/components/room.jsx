@@ -17,7 +17,7 @@ function VideoStream({ stream }) {
   }, [stream]);
 
   return (
-    <div>
+    <div style = {vidbox2}>
       {/* <h1>My Video Stream</h1> */}
       <video style={{margin: "9px" , borderRadius: "10px"}} id="video-element" width="95%" height="95%" />
     </div>
@@ -211,9 +211,9 @@ const RoomPage = () => {
       )}
       
       {remoteStream && (
-          <div style = {vidbox2}>
+          <>
      <VideoStream stream={remoteStream} />
-     </div>
+     </>
       )}
 
       <div style={{display : "flex" , alignItems: "center"}}>
