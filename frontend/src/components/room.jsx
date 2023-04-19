@@ -3,6 +3,29 @@ import ReactPlayer from "react-player";
 import peer from "./peer";
 import { useSocket } from "./socketprovider";
 
+// styling
+const vidbox1 = {
+  marginBottom: "0px",
+  marginTop: "7px",
+  marginLeft: "7px",
+  height: "40%",
+  width: "95%",
+  backgroundColor: "#87CEEB",
+  borderRadius: "10px",
+  alignItems: "center",
+};
+
+const vidbox2 = {
+  marginBottom: "0px",
+  marginTop: "7px",
+  marginLeft: "7px",
+  height: "40%",
+  width: "95%",
+  backgroundColor: "#87CEEB",
+  borderRadius: "10px",
+};
+
+
 function VideoStream({ stream }) {
   useEffect(() => {
     if (stream) {
@@ -16,9 +39,9 @@ function VideoStream({ stream }) {
   }, [stream]);
 
   return (
-    <div>
-      <h1>My Video Stream</h1>
-      <video id="video-element" width="640" height="480" />
+    <div style={vidbox2}>
+      {/* <h1>My Video Stream</h1> */}
+      <video id="video-element" width="100%" height="100%" />
     </div>
   );
 }
@@ -29,6 +52,9 @@ const RoomPage = () => {
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
+
+  // const call
+
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
@@ -152,23 +178,30 @@ const RoomPage = () => {
   return (
     <div className="App">
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
+
+    
       {myStream && <button onClick={sendStreams}>Send Stream</button>}
+      
       {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+
+
+      
+      
       {myStream && (
-        <>
-          <h1>My Stream</h1>
+        <div style={vidbox1}>
+          {/* <h1>My Stream</h1> */}
           <ReactPlayer
             playing
             muted
-            height="100px"
-            width="200px"
+            height="100%"
+            width="100%"
             url={myStream}
           />
-        </>
+        </div>
       )}
       {remoteStream && (
         <>
-          <h1>Remote Stream</h1>
+          {/* <h1>Remote Stream</h1> */}
      <VideoStream stream={remoteStream} />
         </>
       )}
