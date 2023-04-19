@@ -40,7 +40,6 @@ const RoomPage = () => {
       console.log('getUserMedia is not supported');
       return;
   }
-
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
@@ -48,7 +47,6 @@ const RoomPage = () => {
     const offer = await peer.getOffer();
     socket.emit("user:call", { to: remoteSocketId, offer });
     setMyStream(stream);
-    sendStreams()
   }, [remoteSocketId, socket]);
 
   const handleIncommingCall = useCallback(
@@ -64,7 +62,6 @@ const RoomPage = () => {
       console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
-      // sendStreams();  
     },
     [socket]
   );
@@ -155,7 +152,7 @@ const RoomPage = () => {
   return (
     <div className="App">
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
-   {/*  {myStream && <button onClick={sendStreams}>Send Stream</button>} */}
+      {myStream && <button onClick={sendStreams}>Send Stream</button>}
       {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
       {myStream && (
         <>
