@@ -194,10 +194,19 @@ const RoomPage = () => {
   return (
     <div className="App">
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
+      {myStream && <button onClick={sendStreams}>Send Stream</button>}
+      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
       
       {myStream && (
-        <div style = {vidbox1}>
-          <VideoStream stream={myStream} />
+        <div style = {vidbox1}>      
+        <ReactPlayer
+        playing
+        muted
+        height="95%"
+        width="95%"
+        style={{margin: "9px" , borderRadius: "10px"}} 
+        url={myStream}
+      />
         </div>
       )}
       
@@ -224,8 +233,7 @@ const RoomPage = () => {
 
       </div>
 
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+      
       
     </div>
   );
