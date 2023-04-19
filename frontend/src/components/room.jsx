@@ -6,9 +6,9 @@ import { useSocket } from "./socketprovider";
 // styling
 const vidbox1 = {
   marginBottom: "0px",
-  marginTop: "7px",
+  marginTop: "0px",
   marginLeft: "7px",
-  height: "40%",
+  height: "35%",
   width: "95%",
   backgroundColor: "#87CEEB",
   borderRadius: "10px",
@@ -16,10 +16,10 @@ const vidbox1 = {
 };
 
 const vidbox2 = {
-  marginBottom: "0px",
+  marginBottom: "140px",
   marginTop: "7px",
   marginLeft: "7px",
-  height: "40%",
+  height: "35%",
   width: "95%",
   backgroundColor: "#87CEEB",
   borderRadius: "10px",
@@ -54,6 +54,7 @@ const RoomPage = () => {
   const [remoteStream, setRemoteStream] = useState();
 
   // const call
+  const [removess, setRemovess] = useState();
 
 
   const handleUserJoined = useCallback(({ email, id }) => {
@@ -99,6 +100,7 @@ const RoomPage = () => {
 //   }, [myStream]);
   
   const sendStreams = useCallback(() => {
+    setRemovess("1");
   for (const track of myStream.getTracks()) {
     const sender = peer.peer.getSenders().find((s) => s.track === track);
     if (!sender) {
@@ -180,9 +182,9 @@ const RoomPage = () => {
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
 
     
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
+      {!removess && myStream && <button onClick={sendStreams}>Send Stream</button>}
       
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+      {!myStream && remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
 
 
       
