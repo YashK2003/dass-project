@@ -48,6 +48,7 @@ const RoomPage = () => {
     const offer = await peer.getOffer();
     socket.emit("user:call", { to: remoteSocketId, offer });
     setMyStream(stream);
+    sendStreams()
   }, [remoteSocketId, socket]);
 
   const handleIncommingCall = useCallback(
@@ -63,7 +64,7 @@ const RoomPage = () => {
       console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
-      sendStreams();  
+      // sendStreams();  
     },
     [socket]
   );
