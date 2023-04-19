@@ -2,11 +2,14 @@ import React, { useRef, useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "./peer";
 import { useSocket } from "./socketprovider";
+import { MdOutlineCallEnd } from "react-icons/md";
+import { BsCameraVideoOff, BsMicMute, BsMic, BsCameraVideo } from "react-icons/bs";
+
 
 // styling
 const vidbox1 = {
-  marginBottom: "0px",
-  marginTop: "0px",
+  marginBottom: "5px",
+  marginTop: "15px",
   marginLeft: "7px",
   height: "35%",
   width: "95%",
@@ -16,7 +19,7 @@ const vidbox1 = {
 };
 
 const vidbox2 = {
-  marginBottom: "140px",
+  marginBottom: "190px",
   marginTop: "7px",
   marginLeft: "7px",
   height: "35%",
@@ -26,35 +29,16 @@ const vidbox2 = {
 };
 
 
-function VideoStream({ stream }) {
-  useEffect(() => {
-    if (stream) {
-      // Set the `srcObject` property of the video element to the media stream
-      const videoElement = document.getElementById('video-element');
-      videoElement.srcObject = stream;
-
-      // Play the video
-      videoElement.play();
-    }
-  }, [stream]);
-
-  return (
-    <div style={vidbox2}>
-      {/* <h1>My Video Stream</h1> */}
-      <video id="video-element" width="100%" height="100%" />
-    </div>
-  );
-}
-
-
 const RoomPage = () => {
-  const {socket , callEnded , leaveCall} = useSocket();
+  const { socket, callEnded, leaveCall } = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
 
   // const call
   const [removess, setRemovess] = useState();
+  const [miconoff, setMiconoff] = useState(true);
+  const [videoonoff, setVideoonoff] = useState(true);
 
 
   const handleUserJoined = useCallback(({ email, id }) => {
@@ -66,7 +50,7 @@ const RoomPage = () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       console.log('getUserMedia is not supported');
       return;
-  }
+    }
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
@@ -84,8 +68,8 @@ const RoomPage = () => {
         video: true,
       });
       setMyStream(stream);
-      console.log("mystream is" , stream);
-      
+      console.log("mystream is", stream);
+
       console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
@@ -93,21 +77,21 @@ const RoomPage = () => {
     [socket]
   );
 
-//   const sendStreams = useCallback(() => {
-//     for (const track of myStream.getTracks()) {
-//       peer.peer.addTrack(track, myStream);
-//     }
-//   }, [myStream]);
-  
+  //   const sendStreams = useCallback(() => {
+  //     for (const track of myStream.getTracks()) {
+  //       peer.peer.addTrack(track, myStream);
+  //     }
+  //   }, [myStream]);
+
   const sendStreams = useCallback(() => {
     setRemovess("1");
-  for (const track of myStream.getTracks()) {
-    const sender = peer.peer.getSenders().find((s) => s.track === track);
-    if (!sender) {
-      peer.peer.addTrack(track, myStream);
+    for (const track of myStream.getTracks()) {
+      const sender = peer.peer.getSenders().find((s) => s.track === track);
+      if (!sender) {
+        peer.peer.addTrack(track, myStream);
+      }
     }
-  }
-}, [myStream, peer]);
+  }, [myStream, peer]);
 
   const handleCallAccepted = useCallback(
     ({ from, ans }) => {
@@ -146,7 +130,7 @@ const RoomPage = () => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStreamtemp = ev.streams;
       console.log("GOT TRACKS!!");
-      console.log("remoteStream is" , remoteStreamtemp);
+      console.log("remoteStream is", remoteStreamtemp);
       setRemoteStream(remoteStreamtemp[0]);
     });
   }, []);
@@ -157,7 +141,7 @@ const RoomPage = () => {
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
     socket.on("peer:nego:final", handleNegoNeedFinal);
-    socket.on("getUsers" , (data) =>{
+    socket.on("getUsers", (data) => {
       console.log(data.users)
     })
 
@@ -177,18 +161,99 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
 
+  // functions for buttons 
+  function callhangup() {
+    // video call  end implementation
+    console.log("callhangup")
+
+  }
+
+  function micmute() {
+    // mute the audio implementation
+    // console.log("micmute")
+    if (miconoff)
+      setMiconoff(false)
+    else
+      setMiconoff(true)
+  }
+
+  function videoclose() {
+    // close the video end implementation
+    // console.log("videoclose")
+    if (videoonoff)
+      setVideoonoff(false)
+    else
+      setVideoonoff(true)
+  }
+
+  function VideoStream({ stream }) {
+    useEffect(() => {
+      if (stream) {
+        // Set the `srcObject` property of the video element to the media stream
+        const videoElement = document.getElementById('video-element');
+        videoElement.srcObject = stream;
+  
+        // Play the video
+        videoElement.play();
+      }
+    }, [stream]);
+  
+    return (
+      <div style={vidbox2}>
+        {/* <h1>My Video Stream</h1> */}
+        <video id="video-element" width="100%" height="100%" />
+        <br/><br/>
+        <div style={{ display: "flex", alignItems: "center",marginTop:"10%"  }}>
+  
+          {
+            !miconoff &&
+            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+              <BsMicMute style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            miconoff &&
+            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+              <BsMic style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            !videoonoff &&
+            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
+              <BsCameraVideoOff style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            videoonoff &&
+            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
+              <BsCameraVideo style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+  
+          <button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "red", width: "55px", height: "55px" }} onClick={callhangup}>
+            <MdOutlineCallEnd style={{ fontSize: "35px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
+          </button>
+  
+  
+        </div>  
+  
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
 
-    
+
       {!removess && myStream && <button onClick={sendStreams}>Send Stream</button>}
-      
+
       {!myStream && remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
 
-
-      
-      
       {myStream && (
         <div style={vidbox1}>
           {/* <h1>My Stream</h1> */}
@@ -204,10 +269,13 @@ const RoomPage = () => {
       {remoteStream && (
         <>
           {/* <h1>Remote Stream</h1> */}
-     <VideoStream stream={remoteStream} />
+          <VideoStream stream={remoteStream} />
         </>
       )}
       
+
+
+
     </div>
   );
 };
