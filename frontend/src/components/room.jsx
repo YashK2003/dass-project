@@ -2,36 +2,12 @@ import React, { useRef, useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "./peer";
 import { useSocket } from "./socketprovider";
-import { MdOutlineCallEnd } from "react-icons/md";
-import { BsCameraVideoOff, BsMicMute } from "react-icons/bs";
-
-// styling
-const vidbox1 = {
-  marginBottom: "0px",
-  marginTop: "10px",
-  marginLeft: "10px",
-  height: "40%",
-  width: "95%",
-  backgroundColor: "#87CEEB",
-  borderRadius: "10px",
-  alignItems: "center",
-};
-
-const vidbox2 = {
-  marginBottom: "0px",
-  marginTop: "10px",
-  marginLeft: "10px",
-  height: "40%",
-  width: "95%",
-  backgroundColor: "#87CEEB",
-  borderRadius: "10px",
-};
 
 function VideoStream({ stream }) {
   useEffect(() => {
     if (stream) {
       // Set the `srcObject` property of the video element to the media stream
-      const videoElement = document.getElementById("video-element");
+      const videoElement = document.getElementById('video-element');
       videoElement.srcObject = stream;
 
       // Play the video
@@ -40,25 +16,16 @@ function VideoStream({ stream }) {
   }, [stream]);
 
   return (
-    <div style={vidbox2}>
-      {/* <h1>My Video Stream</h1> */}
-      <video
-        
-        style={{ margin: "9px", borderRadius: "10px" }}
-        id="video-element"
-        width="95%"
-        height="95%"
-      />
+    <div>
+      <h1>My Video Stream</h1>
+      <video id="video-element" width="640" height="480" />
     </div>
   );
 }
 
 
-
 const RoomPage = () => {
-  const { socket } = useSocket();
-  const [callAccepted, setCallAccepted] = useState(false);
-
+  const {socket , callEnded , leaveCall} = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
@@ -70,9 +37,10 @@ const RoomPage = () => {
 
   const handleCallUser = useCallback(async () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      console.log("getUserMedia is not supported");
+      console.log('getUserMedia is not supported');
       return;
-    }
+  }
+  sendStreams();
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
@@ -80,20 +48,18 @@ const RoomPage = () => {
     const offer = await peer.getOffer();
     socket.emit("user:call", { to: remoteSocketId, offer });
     setMyStream(stream);
-    setCallAccepted(true);
   }, [remoteSocketId, socket]);
 
   const handleIncommingCall = useCallback(
     async ({ from, offer }) => {
-      console.log("setting remote socket id");
       setRemoteSocketId(from);
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true,
       });
       setMyStream(stream);
-      console.log("mystream is", stream);
-
+      console.log("mystream is" , stream);
+      
       console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
@@ -101,20 +67,20 @@ const RoomPage = () => {
     [socket]
   );
 
-  //   const sendStreams = useCallback(() => {
-  //     for (const track of myStream.getTracks()) {
-  //       peer.peer.addTrack(track, myStream);
-  //     }
-  //   }, [myStream]);
-
+//   const sendStreams = useCallback(() => {
+//     for (const track of myStream.getTracks()) {
+//       peer.peer.addTrack(track, myStream);
+//     }
+//   }, [myStream]);
+  
   const sendStreams = useCallback(() => {
-    for (const track of myStream.getTracks()) {
-      const sender = peer.peer.getSenders().find((s) => s.track === track);
-      if (!sender) {
-        peer.peer.addTrack(track, myStream);
-      }
+  for (const track of myStream.getTracks()) {
+    const sender = peer.peer.getSenders().find((s) => s.track === track);
+    if (!sender) {
+      peer.peer.addTrack(track, myStream);
     }
-  }, [myStream, peer]);
+  }
+}, [myStream, peer]);
 
   const handleCallAccepted = useCallback(
     ({ from, ans }) => {
@@ -153,12 +119,8 @@ const RoomPage = () => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStreamtemp = ev.streams;
       console.log("GOT TRACKS!!");
-      console.log("remoteStream is", remoteStreamtemp);
+      console.log("remoteStream is" , remoteStreamtemp);
       setRemoteStream(remoteStreamtemp[0]);
-      if (remoteSocketId && !callAccepted) {
-        handleCallUser();
-        console.log("remote = ", remoteSocketId)
-      }
     });
   }, []);
 
@@ -168,9 +130,9 @@ const RoomPage = () => {
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
     socket.on("peer:nego:final", handleNegoNeedFinal);
-    socket.on("getUsers", (data) => {
-      console.log(data.users);
-    });
+    socket.on("getUsers" , (data) =>{
+      console.log(data.users)
+    })
 
     return () => {
       socket.off("user:joined", handleUserJoined);
@@ -188,121 +150,30 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
 
-  // functions for buttons
-  function callhangup() {
-    // video call  end implementation
-    console.log("callhangup");
-  }
-
-  function micmute() {
-    // mute the audio implementation
-    console.log("micmute");
-  }
-
-  function videoclose() {
-    // close the video end implementation
-    console.log("videoclose");
-  }
-
   return (
     <div className="App">
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4> */}
-
-      {/* {myStream && (
-        <div style={vidbox1}>
-          <VideoStream stream={myStream} />
-        </div>
-      )} */}
-
+//       {myStream && <button onClick={sendStreams}>Send Stream</button>}
+      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
       {myStream && (
-        <div style={vidbox1}>
+        <>
+          <h1>My Stream</h1>
           <ReactPlayer
             playing
             muted
-            height="95%"
-            width="95%"
-            style={{ margin: "9px", borderRadius: "10px" }}
+            height="100px"
+            width="200px"
             url={myStream}
           />
-        </div>
+        </>
       )}
-
       {remoteStream && (
-        <div style={vidbox2}>
-          <VideoStream stream={remoteStream} />
-        </div>
+        <>
+          <h1>Remote Stream</h1>
+     <VideoStream stream={remoteStream} />
+        </>
       )}
-
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <button
-          style={{
-            cursor: "pointer",
-            marginLeft: "23%",
-            marginRight: "25px",
-            border: "2px solid black",
-            borderRadius: "100%",
-            backgroundColor: "white",
-            width: "55px",
-            height: "55px",
-          }}
-          onClick={micmute}
-        >
-          <BsMicMute
-            style={{
-              fontSize: "30px",
-              align: "center",
-              marginTop: "3px",
-              marginLeft: "3px",
-            }}
-          />
-        </button>
-
-        <button
-          style={{
-            cursor: "pointer",
-            marginRight: "25px",
-            border: "2px solid black",
-            borderRadius: "100%",
-            backgroundColor: "white",
-            width: "55px",
-            height: "55px",
-          }}
-          onClick={videoclose}
-        >
-          <BsCameraVideoOff
-            style={{
-              fontSize: "30px",
-              align: "center",
-              marginTop: "3px",
-              marginLeft: "3px",
-            }}
-          />
-        </button>
-
-        <button
-          style={{
-            cursor: "pointer",
-            marginRight: "25px",
-            border: "2px solid black",
-            borderRadius: "100%",
-            backgroundColor: "red",
-            width: "55px",
-            height: "55px",
-          }}
-          onClick={callhangup}
-        >
-          <MdOutlineCallEnd
-            style={{
-              fontSize: "35px",
-              align: "center",
-              marginTop: "3px",
-              marginLeft: "3px",
-            }}
-          />
-        </button>
-      </div>
-
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+      
     </div>
   );
 };
