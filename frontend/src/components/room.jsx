@@ -30,8 +30,8 @@ const vidbox1 = {
   marginBottom: "0px",
   marginTop: "10px",
   marginLeft: "10px",
-  height: "40%",
-  width: "95%",
+  height: "30%",
+  width: "85%",
   backgroundColor: "#87CEEB",
   borderRadius: "10px",
   alignItems: "center"
@@ -41,8 +41,8 @@ const vidbox2 = {
   marginBottom: "0px",
   marginTop: "10px",
   marginLeft: "10px",
-  height: "40%",
-  width: "95%",
+  height: "30%",
+  width: "85%",
   backgroundColor: "#87CEEB",
   borderRadius: "10px"
 }
