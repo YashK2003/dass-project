@@ -44,6 +44,8 @@ const RoomPage = () => {
   // remove the forward video
   const [closevideo, setClosevideo] = useState(false);
 
+  // remove the forward audio
+  const [closeaudio, setCloseaudio] = useState(false);
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
@@ -159,6 +161,15 @@ const RoomPage = () => {
       setClosevideo(false)
     })
 
+    socket.on("closeaudio:call", (data) => {
+      console.log("reached here step-2 !!!-> ")
+      setCloseaudio(true)
+    })
+
+    socket.on("openaudio:call", (data) => {
+      console.log("reached here step-2 !!!-> ")
+      setCloseaudio(false)
+    })
 
     return () => {
       socket.off("user:joined", handleUserJoined);
@@ -190,6 +201,13 @@ const RoomPage = () => {
       setMiconoff(false)
     else
       setMiconoff(true)
+
+      if (miconoff) {
+        socket.emit("useraudioclose:call", { to: remoteSocketId });
+      }
+      else {
+        socket.emit("useraudioopen:call", { to: remoteSocketId });
+      }
   }
 
   function videoclose() {
@@ -223,7 +241,7 @@ const RoomPage = () => {
 
     return (
       <div style={vidbox2}>
-        <video id="video-element" width="100%" height="100%" />
+        <video id="video-element" width="100%" height="100%" muted={closeaudio}/>
       </div>
     );
   }
