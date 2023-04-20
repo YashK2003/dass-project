@@ -156,6 +156,16 @@ io.on("connection", (socket) => {
         // console.log("here reached step-1");
         io.to(to).emit("openvideo:call", { from: socket.id });
       });
+
+      socket.on("useraudioclose:call", ({ to }) => {
+        // console.log("here reached step-1");
+        io.to(to).emit("closeaudio:call", { from: socket.id });
+      });
+
+      socket.on("useraudioopen:call", ({ to }) => {
+        // console.log("here reached step-1");
+        io.to(to).emit("openaudio:call", { from: socket.id });
+      });
     
       socket.on("call:accepted", ({ to, ans }) => {
         io.to(to).emit("call:accepted", { from: socket.id, ans });
