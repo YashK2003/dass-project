@@ -241,7 +241,7 @@ const RoomPage = () => {
 
     return (
       <div style={vidbox2}>
-        <video id="video-element" width="100%" height="100%" muted={closeaudio}/>
+        <video id="video-element" width="100%" height="100%" muted/>
       </div>
     );
   }
