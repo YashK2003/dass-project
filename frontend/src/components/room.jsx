@@ -9,7 +9,7 @@ import { BsCameraVideoOff, BsMicMute, BsMic, BsCameraVideo } from "react-icons/b
 // styling
 const vidbox1 = {
   marginBottom: "5px",
-  marginTop: "15px",
+  marginTop: "7px",
   marginLeft: "7px",
   height: "35%",
   width: "95%",
@@ -19,7 +19,7 @@ const vidbox1 = {
 };
 
 const vidbox2 = {
-  marginBottom: "190px",
+  // marginBottom: "0px",
   marginTop: "7px",
   marginLeft: "7px",
   height: "35%",
@@ -39,6 +39,10 @@ const RoomPage = () => {
   const [removess, setRemovess] = useState();
   const [miconoff, setMiconoff] = useState(true);
   const [videoonoff, setVideoonoff] = useState(true);
+
+  // remove the forward video
+  const [closevideo, setClosevideo] = useState(false);
+
 
 
   const handleUserJoined = useCallback(({ email, id }) => {
@@ -145,6 +149,12 @@ const RoomPage = () => {
       console.log(data.users)
     })
 
+    socket.on("closevideo:call", (data) => {
+      console.log("reached here step-2 !!!")
+      setClosevideo(true)
+    })
+    
+
     return () => {
       socket.off("user:joined", handleUserJoined);
       socket.off("incomming:call", handleIncommingCall);
@@ -179,11 +189,13 @@ const RoomPage = () => {
 
   function videoclose() {
     // close the video end implementation
-    // console.log("videoclose")
+    console.log("videoclose")
     if (videoonoff)
       setVideoonoff(false)
     else
       setVideoonoff(true)
+    
+    socket.emit("uservideoclose:call", { to: remoteSocketId });
   }
 
   function VideoStream({ stream }) {
@@ -200,47 +212,7 @@ const RoomPage = () => {
   
     return (
       <div style={vidbox2}>
-        {/* <h1>My Video Stream</h1> */}
-        <video id="video-element" width="100%" height="100%" />
-        <br/><br/>
-        <div style={{ display: "flex", alignItems: "center",marginTop:"10%"  }}>
-  
-          {
-            !miconoff &&
-            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
-              <BsMicMute style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
-            </button>)
-          }
-  
-          {
-            miconoff &&
-            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
-              <BsMic style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
-            </button>)
-          }
-  
-          {
-            !videoonoff &&
-            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
-              <BsCameraVideoOff style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
-            </button>)
-          }
-  
-          {
-            videoonoff &&
-            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
-              <BsCameraVideo style={{ fontSize: "30px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
-            </button>)
-          }
-  
-  
-          <button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "red", width: "55px", height: "55px" }} onClick={callhangup}>
-            <MdOutlineCallEnd style={{ fontSize: "35px", align: "center", marginTop: "3px", marginLeft: "3px" }} />
-          </button>
-  
-  
-        </div>  
-  
+       <video id="video-element" width="100%" height="100%" />           
       </div>
     );
   }
@@ -254,7 +226,7 @@ const RoomPage = () => {
 
       {!myStream && remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
 
-      {myStream && (
+      {myStream && videoonoff && (
         <div style={vidbox1}>
           {/* <h1>My Stream</h1> */}
           <ReactPlayer
@@ -266,12 +238,65 @@ const RoomPage = () => {
           />
         </div>
       )}
-      {remoteStream && (
+
+      {!videoonoff && (
+        <>
+          <div style={vidbox1}> <h1 >Video off </h1> </div>
+        </>
+      )}
+
+
+      {remoteStream && !closevideo &&(
         <>
           {/* <h1>Remote Stream</h1> */}
           <VideoStream stream={remoteStream} />
         </>
       )}
+
+      {closevideo && (
+        <>
+          <div style={vidbox2}> <h1 >Video off </h1> </div>
+        </>
+      )}
+
+       <br/><br/>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: "170px"  }}>
+  
+          {
+            !miconoff &&
+            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+              <BsMicMute style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            miconoff &&
+            (<button style={{ cursor: "pointer", marginLeft: "23%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+              <BsMic style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            !videoonoff &&
+            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
+              <BsCameraVideoOff style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+          {
+            videoonoff &&
+            (<button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={videoclose}>
+              <BsCameraVideo style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
+            </button>)
+          }
+  
+  
+          <button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "red", width: "55px", height: "55px" }} onClick={callhangup}>
+            <MdOutlineCallEnd style={{ fontSize: "35px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
+          </button>
+  
+  
+        </div>  
       
 
 
