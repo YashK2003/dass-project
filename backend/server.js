@@ -205,25 +205,30 @@ io.on("connection", (socket) => {
       socket.on("user:call", ({ to, offer }) => {
         io.to(to).emit("incomming:call", { from: socket.id, offer });
       });
+
+      socket.on("uservideoclose:call", ({ to }) => {
+        // console.log("here reached step-1");
+        io.to(to).emit("closevideo:call", { from: socket.id });
+      });
     
       socket.on("call:accepted", ({ to, ans }) => {
         io.to(to).emit("call:accepted", { from: socket.id, ans });
       });
     
       socket.on("peer:nego:needed", ({ to, offer }) => {
-        console.log("peer:nego:needed", offer);
+        // console.log("peer:nego:needed", offer);
         io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
       });
     
       socket.on("peer:nego:done", ({ to, ans }) => {
-        console.log("peer:nego:done", ans);
+        // console.log("peer:nego:done", ans);
         io.to(to).emit("peer:nego:final", { from: socket.id, ans });
       });
     
     //send and get message
     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
         const user = getUser(receiverId);
-        console.log(user);
+        // console.log(user);
         if(user !== undefined){
         io.to(user.socketId).emit("getMessage", {
             senderId,
