@@ -15,6 +15,8 @@ import LobbyScreen from "./components/lobby";
 import RoomPage from "./components/room";
 import ProfilePage from "./components/profile";
 import { Closecall } from "./components/closecall";
+import  Audiocallpg  from "./components/audiocallpg";
+import AudioroomPage from "./components/audioroom";
 
 function App()
 {
@@ -31,8 +33,10 @@ function App()
         <Route path="/notif" exact element={<Notifications/>} />
         <Route path="/profile" exact element={<ProfilePage/>} />
         <Route path="/lobby" exact element = {<LobbyScreen/>}/>
+        <Route path="/audcall" exact element = {<Audiocallpg/>}/>
         <Route path="/callclosed" exact element = {<Closecall/>}/>
         <Route path= "/room/:roomid" exact element = {<RoomPage/>}/>
+        <Route path= "/audioroom/:roomid" exact element = {<AudioroomPage/>}/>
         <Route  path="*" element={<NotFound />} />
         </Routes>
     </BrowserRouter>
