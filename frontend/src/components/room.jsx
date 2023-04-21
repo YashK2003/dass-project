@@ -5,7 +5,7 @@ import { useSocket } from "./socketprovider";
 import { MdOutlineCallEnd } from "react-icons/md";
 import { BsCameraVideoOff, BsMicMute, BsMic, BsCameraVideo } from "react-icons/bs";
 import { Button } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 
 // styling
 const vidbox1 = {
@@ -46,6 +46,8 @@ const RoomPage = () => {
 
   // remove the forward audio
   const [closeaudio, setCloseaudio] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
@@ -171,6 +173,10 @@ const RoomPage = () => {
       setCloseaudio(false)
     })
 
+    socket.on("hangupcallnow:call", (data) => {
+      navigate("/callclosed")
+    })
+    
     return () => {
       socket.off("user:joined", handleUserJoined);
       socket.off("incomming:call", handleIncommingCall);
@@ -190,8 +196,8 @@ const RoomPage = () => {
   // functions for buttons 
   function callhangup() {
     // video call  end implementation
-    console.log("callhangup")
-
+    socket.emit("userhangup:call", { to: remoteSocketId });
+    navigate("/lobby")
   }
 
   function micmute() {

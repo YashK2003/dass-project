@@ -35,7 +35,9 @@ const LobbyScreen = () => {
   };
 
   const handleback = () => { 
-    window.location.reload();
+    // navigate("/lobby")
+    setLinktocall("")
+    setJoinacall("")
   };
 
 
@@ -118,8 +120,6 @@ const LobbyScreen = () => {
                 Copy Link 
             </Button>
             </CopyToClipboard>
-            <br/>
-            
             </>
         )}
         </div>
@@ -156,6 +156,8 @@ const LobbyScreen = () => {
     {  ( joinacall || linktocall)  && (        
         <Button variant='contained' style={{margin: "auto",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={() => { handleback() }}> Go Back  </Button>
     )}
+
+    <Button variant='contained' style={{margin: "auto",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={() => { navigate("/home")}}> Go to home  </Button>
     
     </div>
   );
