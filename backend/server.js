@@ -166,6 +166,11 @@ io.on("connection", (socket) => {
         // console.log("here reached step-1");
         io.to(to).emit("openaudio:call", { from: socket.id });
       });
+
+      socket.on("userhangup:call", ({ to }) => {
+        // console.log("here reached step-1");
+        io.to(to).emit("hangupcallnow:call", { from: socket.id });
+      });
     
       socket.on("call:accepted", ({ to, ans }) => {
         io.to(to).emit("call:accepted", { from: socket.id, ans });
