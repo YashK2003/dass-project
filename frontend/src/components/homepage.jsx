@@ -10,6 +10,8 @@ import { AiOutlineVideoCamera } from "react-icons/ai";
 import { TiUserOutline } from "react-icons/ti";
 import { AiFillHome } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
+import { BiPhoneCall } from "react-icons/bi";
+
 
 const slidestyle = {
   margin: "auto",
@@ -102,18 +104,22 @@ export const Homepage = () => {
           <div style={{ marginTop: "17%" }}>
         
             <button
-              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }}>
+              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "4.95%" }}>
               <AiFillHome /></button>
 
             <button
-              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/cl") }}>
+              style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "4.95%" }} onClick={() => { navigate("/cl") }}>
               <AiOutlineMessage /></button>
 
-            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/lobby") }}>
+            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "4.95%" }} onClick={() => { navigate("/lobby") }}>
               <AiOutlineVideoCamera /></button>
 
-            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "8.25%" }} onClick={() => { navigate("/profile") }}>
+            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "35px", marginLeft: "4.95%" }} onClick={() => { navigate("/audcall") }}>
+              <BiPhoneCall /></button>
+            
+            <button style={{ color: "white", borderStyle: "unset", backgroundColor: "transparent", fontSize: "40px", marginLeft: "4.95%" }} onClick={() => { navigate("/profile") }}>
               <TiUserOutline /></button>
+
 
 
           </div>
