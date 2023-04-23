@@ -97,7 +97,6 @@ export const RegistrationPage = () => {
 
   const RegisterPage = async () => {
 
-   
 
     if (name === "") {
       setHelpername("Name is necessary!!")
@@ -163,6 +162,8 @@ export const RegistrationPage = () => {
 
     
 
+    setLoadercheck("1")
+
     const detailsobj = {
       name: name,
       phoneno: phone,
@@ -180,7 +181,6 @@ export const RegistrationPage = () => {
     let st2 = "/data/registeradd";
     let result = st1.concat(st2);
     console.log(result);
-     setLoadercheck("1")
     axios
       .post(result, detailsobj)
 
@@ -188,16 +188,19 @@ export const RegistrationPage = () => {
 
         if (res.data.data === "Exists") {
           window.alert("Email already registered !!");
+          navigate('/register');
           return
         }
         if (res.data.data === "Existsph") {
           window.alert("Phone Number already registered !!");
+          navigate('/register');
           return
         }
         else {
           window.alert("User registered successful !!");
+          navigate('/login');
           setLoadercheck('')
-          (window.location.href = "/login")
+          
         }
       })
   }
