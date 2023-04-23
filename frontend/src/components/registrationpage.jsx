@@ -168,7 +168,7 @@ export const RegistrationPage = () => {
       name: name,
       phoneno: phone,
       email: email,
-      location: "",
+      location: "location",
       state: state,
       country: country,
       profession: "",
@@ -188,19 +188,20 @@ export const RegistrationPage = () => {
 
         if (res.data.data === "Exists") {
           window.alert("Email already registered !!");
+           setLoadercheck('')
           navigate('/register');
           return
         }
         if (res.data.data === "Existsph") {
           window.alert("Phone Number already registered !!");
+           setLoadercheck('')
           navigate('/register');
           return
         }
         else {
           window.alert("User registered successful !!");
+           setLoadercheck('')
           navigate('/login');
-          setLoadercheck('')
-          
         }
       })
   }
