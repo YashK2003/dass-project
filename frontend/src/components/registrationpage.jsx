@@ -97,7 +97,7 @@ export const RegistrationPage = () => {
 
   const RegisterPage = async () => {
 
-    setLoadercheck("1")
+   
 
     if (name === "") {
       setHelpername("Name is necessary!!")
@@ -180,6 +180,7 @@ export const RegistrationPage = () => {
     let st2 = "/data/registeradd";
     let result = st1.concat(st2);
     console.log(result);
+     setLoadercheck("1")
     axios
       .post(result, detailsobj)
 
