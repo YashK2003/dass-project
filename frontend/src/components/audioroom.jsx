@@ -10,10 +10,10 @@ import WaveLoading from './loader2'
 
 // styling
 const vidbox1 = {
-  marginBottom: "0px",
+  marginBottom: "5px",
   marginTop: "7px",
   marginLeft: "7px",
-  height: "95%",
+  height: "35%",
   width: "95%",
   backgroundColor: "#87CEEB",
   borderRadius: "10px",
@@ -30,8 +30,19 @@ const vidbox2 = {
   borderRadius: "10px",
 };
 
+const audioboxstyle = {
+  marginBottom: "0px",
+  marginTop: "7px",
+  marginLeft: "7px",
+  height: "95%",
+  width: "95%",
+  backgroundColor: "#87CEEB",
+  borderRadius: "10px",
+  alignItems: "center",
+};
 
-const AudioroomPage = () => {
+
+const RoomPage = () => {
   const { socket, callEnded, leaveCall } = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
@@ -41,6 +52,9 @@ const AudioroomPage = () => {
   const [removess, setRemovess] = useState();
   const [miconoff, setMiconoff] = useState(true);
   const [videoonoff, setVideoonoff] = useState(true);
+
+  // remove the forward video
+  const [closevideo, setClosevideo] = useState(false);
 
   // remove the forward audio
   const [closeaudio, setCloseaudio] = useState(false);
@@ -151,6 +165,16 @@ const AudioroomPage = () => {
       console.log(data.users)
     })
 
+    socket.on("closevideo:call", (data) => {
+      console.log("reached here step-2 !!!-> ")
+      setClosevideo(true)
+    })
+
+    socket.on("openvideo:call", (data) => {
+      console.log("reached here step-2 !!!-> ")
+      setClosevideo(false)
+    })
+
     socket.on("closeaudio:call", (data) => {
       console.log("reached here step-2 !!!-> ")
       setCloseaudio(true)
@@ -204,6 +228,22 @@ const AudioroomPage = () => {
       }
   }
 
+  function videoclose() {
+    // close the video end implementation
+    console.log("videoclose")
+    if (videoonoff)
+      setVideoonoff(false)
+    else
+      setVideoonoff(true)
+
+    if (videoonoff) {
+      socket.emit("uservideoclose:call", { to: remoteSocketId });
+    }
+    else {
+      socket.emit("uservideoopen:call", { to: remoteSocketId });
+    }
+
+  }
 
   function VideoStream({ stream }) {
     useEffect(() => {
@@ -218,8 +258,8 @@ const AudioroomPage = () => {
     }, [stream]);
 
     return (
-      <div style={vidbox2}>
-        <video id="video-element" width="100%" height="100%" muted={closeaudio}/>
+      <div>
+        <video id="video-element" width="1%" height="1%" muted={closeaudio}/>
       </div>
     );
   }
@@ -232,20 +272,36 @@ const AudioroomPage = () => {
       }
 
 
-      {!removess && myStream && <Button variant='contained' style={{marginTop: "5%",marginLeft: "10%",marginBottom: "10px",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={sendStreams}> Connect Audio  </Button>}
+      {!removess && myStream && <Button variant='contained' style={{marginTop: "5%",marginLeft: "10%",marginBottom: "10px",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={sendStreams}> Send Stream  </Button>}
       
 
-      {!myStream && remoteSocketId && <Button variant='contained' style={{marginTop: "70%",marginLeft: "10%",marginBottom: "2000px",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={handleCallUser}> Join audio call  </Button>}
+      {!myStream && remoteSocketId && <Button variant='contained' style={{marginTop: "70%",marginLeft: "10%",marginBottom: "2000px",width:"80%", backgroundColor:"#DAF5FF", color:"black"}} onClick={handleCallUser}> Join a call  </Button>}
       
 
       {myStream && videoonoff && (
-        <div style={vidbox1}>
+        <div style={audioboxstyle}>
           {/* <h1>My Stream</h1> */}
+          <ReactPlayer
+            playing
+            muted
+            height="100%"
+            width="100%"
+            url={myStream}
+          />
           <WaveLoading />
         </div>
       )}
 
-    
+     
+
+
+      {remoteStream && !closevideo && (
+        <>
+          {/* <h1>Remote Stream</h1> */}
+          <VideoStream stream={remoteStream} />
+        </>
+      )}
+
       <br /><br />
       {
         remoteSocketId &&
@@ -253,17 +309,19 @@ const AudioroomPage = () => {
 
         {
           !miconoff && 
-          (<button style={{ cursor: "pointer", marginLeft: "37%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+          (<button style={{ cursor: "pointer", marginLeft: "33%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
             <BsMicMute style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
           </button>)
         }
 
         {
           miconoff && 
-          (<button style={{ cursor: "pointer", marginLeft: "37%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
+          (<button style={{ cursor: "pointer", marginLeft: "33%", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "white", width: "55px", height: "55px" }} onClick={micmute}>
             <BsMic style={{ fontSize: "30px", align: "center", marginTop: "0px", marginLeft: "3px" }} />
           </button>)
         }
+
+        
 
         { 
           <button style={{ cursor: "pointer", marginRight: "25px", border: "2px solid black", borderRadius: "100%", backgroundColor: "red", width: "55px", height: "55px" }} onClick={callhangup}>
@@ -282,4 +340,4 @@ const AudioroomPage = () => {
   );
 };
 
-export default AudioroomPage;
+export default RoomPage;
